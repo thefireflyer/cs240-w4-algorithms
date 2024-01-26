@@ -1,8 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
-use std::{fmt, ops::Div};
-
-use tailcall::tailcall;
+use std::fmt;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -16,38 +14,44 @@ use tailcall::tailcall;
 ///
 ///
 fn quick_sort<T: Clone + Ord + fmt::Debug>(arr: Vec<T>) -> Vec<T> {
-    println!("{:?}", arr);
-    if arr.len() < 2 {
-        arr.to_vec()
-    } else {
-        let pivot = arr.len() / 2;
+    fn inner<T: Clone + Ord + fmt::Debug>(arr: Vec<&T>) -> Vec<&T> {
+        if arr.len() < 2 {
+            arr.to_vec()
+        } else {
+            let pivot = arr.len() / 2;
 
-        let mut less: Vec<T> = vec![];
-        let mut greater: Vec<T> = vec![];
+            let mut less: Vec<&T> = vec![];
+            let mut greater: Vec<&T> = vec![];
 
-        for i in 0..pivot {
-            let item = arr[i].clone();
-            if item < arr[pivot] {
-                less.push(item);
-            } else {
-                greater.push(item);
+            for i in 0..pivot {
+                let item = arr[i];
+                if item < arr[pivot] {
+                    less.push(item);
+                } else {
+                    greater.push(item);
+                }
             }
-        }
 
-        for i in pivot + 1..arr.len() {
-            let item = arr[i].clone();
-            if item < arr[pivot] {
-                less.push(item);
-            } else {
-                greater.push(item);
+            for i in pivot + 1..arr.len() {
+                let item = arr[i];
+                if item < arr[pivot] {
+                    less.push(item);
+                } else {
+                    greater.push(item);
+                }
             }
+
+            let less = inner(less);
+            let greater = inner(greater);
+
+            [less, vec![arr[pivot]], greater].concat()
         }
-
-        let less = quick_sort(less);
-        let greater = quick_sort(greater);
-
-        [less, vec![arr[pivot].clone()], greater].concat()
     }
+
+    inner(arr.iter().map(|i| i).collect())
+        .iter()
+        .map(|i| i.to_owned().to_owned())
+        .collect()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -59,7 +63,7 @@ mod tests {
 
     fn helper(cases: Vec<Vec<i32>>) {
         for case in cases {
-            let mut real = case.clone();
+            let real = case.clone();
             let mut expected = case.clone();
 
             let real = quick_sort(real);
@@ -107,27 +111,27 @@ mod tests {
         ]);
     }
 
-    // #[test]
-    // fn test_big_sorted() {
-    //     let big_number = (2 as i32).pow(5);
-    //     let mut arr: Vec<i32> = Vec::with_capacity(big_number as usize);
-    //     for i in 0..big_number {
-    //         arr.push(i);
-    //     }
+    #[test]
+    fn test_big_sorted() {
+        let big_number = (2 as i32).pow(20);
+        let mut arr: Vec<i32> = Vec::with_capacity(big_number as usize);
+        for i in 0..big_number {
+            arr.push(i);
+        }
 
-    //     helper(vec![arr]);
-    // }
+        helper(vec![arr]);
+    }
 
-    // #[test]
-    // fn test_big_rev_sorted() {
-    //     let big_number = (2 as i32).pow(5);
-    //     let mut arr: Vec<i32> = Vec::with_capacity(big_number as usize);
-    //     for i in big_number..0 {
-    //         arr.push(i);
-    //     }
+    #[test]
+    fn test_big_rev_sorted() {
+        let big_number = (2 as i32).pow(25);
+        let mut arr: Vec<i32> = Vec::with_capacity(big_number as usize);
+        for i in big_number..0 {
+            arr.push(i);
+        }
 
-    //     helper(vec![arr]);
-    // }
+        helper(vec![arr]);
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
