@@ -1,0 +1,18 @@
+{
+    "spellright.language": [
+        "en_US"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext",
+        "rust"
+    ],
+    "spellright.ignoreFiles": [
+        "/target/*",
+        "**/.gitignore",
+        "**/.spellignore",
+        "/.cargo/*",
+        "/.rustup/"
+    ]
+}
