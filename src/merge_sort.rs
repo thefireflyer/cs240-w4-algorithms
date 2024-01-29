@@ -13,38 +13,35 @@ use std::fmt;
 ///     | The slice to sort
 ///
 ///
-fn quick_sort<T: Clone + Ord + fmt::Debug>(arr: Vec<T>) -> Vec<T> {
+fn merge_sort<T: Clone + Ord + fmt::Debug>(arr: Vec<T>) -> Vec<T> {
     fn inner<T: Clone + Ord + fmt::Debug>(arr: Vec<&T>) -> Vec<&T> {
         if arr.len() < 2 {
             arr.to_vec()
         } else {
             let pivot = arr.len() / 2;
 
-            let mut less: Vec<&T> = vec![];
-            let mut greater: Vec<&T> = vec![];
-
-            for i in 0..pivot {
-                let item = arr[i];
-                if item < arr[pivot] {
-                    less.push(item);
-                } else {
-                    greater.push(item);
-                }
-            }
-
-            for i in pivot + 1..arr.len() {
-                let item = arr[i];
-                if item < arr[pivot] {
-                    less.push(item);
-                } else {
-                    greater.push(item);
-                }
-            }
+            let less: Vec<&T> = arr[..pivot].to_vec();
+            let greater: Vec<&T> = arr[pivot..].to_vec();
 
             let less = inner(less);
             let greater = inner(greater);
 
-            [less, vec![arr[pivot]], greater].concat()
+            let mut res = vec![];
+
+            let mut i = 0;
+            for item in greater {
+                while i < less.len() && item > less[i] {
+                    res.push(less[i]);
+                    i += 1;
+                }
+                res.push(item);
+            }
+            while i < less.len() {
+                res.push(less[i]);
+                i += 1;
+            }
+
+            res
         }
     }
 
@@ -66,7 +63,7 @@ mod tests {
             let real = case.clone();
             let mut expected = case.clone();
 
-            let real = quick_sort(real);
+            let real = merge_sort(real);
 
             expected.sort();
 
