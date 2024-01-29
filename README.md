@@ -1,6 +1,6 @@
 # CS 240 | Week 4 | Algorithms
 
-[![Unit testing](https://github.com/thefireflyer/cs240-w4-algorithms/actions/workflows/test.yml/badge.svg)](https://github.com/thefireflyer/cs240-w3-algorithms/actions/workflows/test.yml)
+[![Unit testing](https://github.com/thefireflyer/cs240-w4-algorithms/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/thefireflyer/cs240-w4-algorithms/actions/workflows/test.yml)
 
 
 | | |
