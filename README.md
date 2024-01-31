@@ -15,8 +15,8 @@
 ### Organization
 
 - Pseudo code and time complexity
-    - [merge sort](pseudocode/mergesort)
-    - [quick sort](pseudocode/quicksort)
+    - [merge sort](pseudocode/merge_sort)
+    - [quick sort](pseudocode/quick_sort)
 - Actual code
     - [main](src/main.rs)
     - [quick sort](src/quick_sort.rs)
