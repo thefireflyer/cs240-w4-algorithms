@@ -18,26 +18,26 @@ fn merge_sort<T: Clone + Ord + fmt::Debug>(arr: Vec<T>) -> Vec<T> {
         if arr.len() < 2 {
             arr.to_vec()
         } else {
-            let pivot = arr.len() / 2;
+            let middle = arr.len() / 2;
 
-            let less: Vec<&T> = arr[..pivot].to_vec();
-            let greater: Vec<&T> = arr[pivot..].to_vec();
+            let lower: Vec<&T> = arr[..middle].to_vec();
+            let upper: Vec<&T> = arr[middle..].to_vec();
 
-            let less = inner(less);
-            let greater = inner(greater);
+            let lower = inner(lower);
+            let upper = inner(upper);
 
             let mut res = vec![];
 
             let mut i = 0;
-            for item in greater {
-                while i < less.len() && item > less[i] {
-                    res.push(less[i]);
+            for item in upper {
+                while i < lower.len() && item > lower[i] {
+                    res.push(lower[i]);
                     i += 1;
                 }
                 res.push(item);
             }
-            while i < less.len() {
-                res.push(less[i]);
+            while i < lower.len() {
+                res.push(lower[i]);
                 i += 1;
             }
 
