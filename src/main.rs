@@ -1,5 +1,4 @@
 ///////////////////////////////////////////////////////////////////////////////
-// #![feature(test)]
 
 use std::{
     fs::File,
@@ -14,23 +13,28 @@ mod quick_sort;
 ///////////////////////////////////////////////////////////////////////////////
 
 fn main() -> Result<(), Error> {
+    // load numbers and turn them into a vector
     let mut input = parse_file("numbers-4.txt")?;
 
+    // use quick sort
     let mut quick = input.clone();
     quick_sort::quick_sort(&mut quick);
 
+    // use merge sort
     let merge = input.clone();
     let merge = merge_sort::merge_sort(merge);
 
+    // use the standard library's sorting algorithm (merge sort)
     input.sort();
 
-    println!("[quick] 90262 @ {:?}", quick.binary_search(&90262));
-    println!("[merge] 90262 @ {:?}", merge.binary_search(&90262));
-    println!("[std] 90262 @ {:?}", input.binary_search(&90262));
+    // use builtin binary search to compare results
+    println!("{:<7} 90262 @ {:?}", "[quick]", quick.binary_search(&90262));
+    println!("{:<7} 90262 @ {:?}", "[merge]", merge.binary_search(&90262));
+    println!("{:<7} 90262 @ {:?}", "[std]", input.binary_search(&90262));
     println!();
-    println!("[quick] 11559 @ {:?}", quick.binary_search(&11559));
-    println!("[merge] 11559 @ {:?}", merge.binary_search(&11559));
-    println!("[std] 11559 @ {:?}", input.binary_search(&11559));
+    println!("{:<7} 11559 @ {:?}", "[quick]", quick.binary_search(&11559));
+    println!("{:<7} 11559 @ {:?}", "[merge]", merge.binary_search(&11559));
+    println!("{:<7} 11559 @ {:?}", "[std]", input.binary_search(&11559));
 
     Ok(())
 }

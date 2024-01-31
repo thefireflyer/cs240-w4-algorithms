@@ -4,47 +4,82 @@ use std::fmt;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// --- Public documentation
-//
-/// Sorts the provided slice in ascending order.
+/// Sorts the provided vector in ascending order.
 ///
 /// - Inputs
-///     | `arr: &[T]` TODO: UPDATE!!
-///     | The slice to sort
+///     | `arr: Vec<T>`
+///     | The vector array to sort
 ///
+/// - Outputs
+///     | `Vec<T>`
+///     | The sorted vector
 ///
 pub fn merge_sort<T: Clone + Ord + fmt::Debug>(arr: Vec<T>) -> Vec<T> {
+    /*
+    --- Merge sort
+
+        Merge sort works by splitting arrays up into equal parts, recursively
+        sorting them, and then merging them back together in order.
+
+        This implementation could be improved by re-using allocated vectors.
+
+    */
+
     fn inner<T: Clone + Ord + fmt::Debug>(arr: Vec<&T>) -> Vec<&T> {
+        // check if we're small enough to already be sorted
         if arr.len() < 2 {
+            // if so, return the array (its already sorted)
             arr.to_vec()
         } else {
+            // find the middle point
             let middle = arr.len() / 2;
 
+            // divide the array into two equal parts
             let lower: Vec<&T> = arr[..middle].to_vec();
             let upper: Vec<&T> = arr[middle..].to_vec();
 
+            // recursively sort each separately
             let lower = inner(lower);
             let upper = inner(upper);
 
+            // create a temp vector for merging
             let mut res = vec![];
 
+            // initialize temp lower index
             let mut i = 0;
+
+            // loop over all items in the right half
             for item in upper {
+                // since we know both halves are already sorted,
+                // we'll run through all values of the left half
+                // less than the current item in the right half
+                // before moving to the next item in the right.
+                // We avoid duplicate work by tracking our progress
+                // in `i`
                 while i < lower.len() && item > lower[i] {
+                    // move next smallest item onto our result vector
                     res.push(lower[i]);
+                    // update left half progress
                     i += 1;
                 }
+                // move next smallest item onto our result vector
                 res.push(item);
             }
+
+            // move the remaining values in the left half over to
+            // the result vector (we already know they're in order)
             while i < lower.len() {
                 res.push(lower[i]);
                 i += 1;
             }
 
+            // return the result vector
             res
         }
     }
 
+    // syntax nightmare to turn Vec<T> into Vec<&T> and back again
+    // probably can be refactored away, but I didn't have time
     inner(arr.iter().map(|i| i).collect())
         .iter()
         .map(|i| i.to_owned().to_owned())
