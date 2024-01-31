@@ -14,7 +14,7 @@
 
 ### Organization
 
-- Pseudo code
+- Pseudo code and time complexity
     - [merge sort](pseudocode/mergesort)
     - [quick sort](pseudocode/quicksort)
 - Actual code

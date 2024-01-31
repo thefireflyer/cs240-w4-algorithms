@@ -1,0 +1,66 @@
+
+function quick_sort(arr) {
+    // heavily based on [2]'s implementation
+    // full explanations in rust implementation
+
+    function part(arr) {
+
+        // initialize to the last element
+        pivot = arr.length - 1; // O(1)
+
+        // initialize to an empty area
+        lower_end = 0; // O(1)
+
+        // look for elements smaller than pivot
+        for i in 0..arr.length { // O(n)
+            if arr[i] < arr[pivot] { // O(1)
+                // move smaller elements into the designated lower area
+                swap(arr[i], arr[lower_end]); // O(1)
+                // notify ourselves that the lower area is one slot bigger
+                lower_end += 1; // O(1)
+            }
+        }
+
+        // move the pivot in-between the lower area and upper area
+        swap(arr[pivot], arr[lower_end]); // O(1)
+
+        // return the index of our pivot element
+        return lower_end; // O(1)
+    } // Overall - O(n)
+
+
+    function inner(arr) {
+        /*
+        Sorting method from [2] ---
+
+            This part is pretty simple.
+            Just check if we're small enough to already be sorted (size < 2)
+            If not, just partition our array and search each side of the
+            partition seperately.
+
+        */
+
+        if arr.len() > 1 {
+            pivot = part(arr); // O(n)
+            inner(arr[..pivot]); // dependent on depth
+            inner(arr[pivot + 1..]); // dependent on depth
+        }
+    }
+
+    // run our inner function on the full array
+    inner(arr); // dependent on depth
+
+    /*
+    Depth depends on the partition method and the provided array.
+    For unsorted arrays, our current method should split inputs rougly in half.
+    For sorted arrays it will just pick one element off the end.
+
+    This means that for unsorted arrays we can expected depth will be around O(logn)
+    While for sorted arrays we might have O(n)
+
+    Since we run partition each level of depth, we will get between O(nlogn) time
+    and O(n^2) time depending on our provided input.
+    I had randomized pivots working in a implementation without in place mutation,
+    but ran out of time for getting them to work together.
+    */
+}

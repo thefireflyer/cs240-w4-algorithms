@@ -1,0 +1,72 @@
+function merge_sort(arr) {
+    /*
+    --- Merge sort
+
+        Merge sort works by splitting arrays up into equal parts, recursively
+        sorting them, and then merging them back together in order.
+
+        This implementation could be improved by re-using allocated vectors.
+
+    */
+
+    // check if we're small enough to already be sorted
+    if arr.length < 2 { // O(1)
+        // if so, return the array (its already sorted)
+        return arr; // O(1)
+    } else {
+        // find the middle point
+        let middle = arr.length / 2; // O(1)
+
+        // divide the array into two equal parts
+        lower = arr[..middle]; // O(1) depending on implementation details
+        upper = arr[middle..]; // O(1) depending on implementation details
+
+        // recursively sort each separately
+        lower = merge_sort(lower); // depends on depth
+        upper = merge_sort(upper); // depends on depth
+
+        // create a temp array for merging
+        res = new []; // O(1)
+
+        // initialize temp lower index
+        i = 0; // O(1)
+
+        // the time complexity of the following 2 for loops comes out to
+        // O(n) together
+
+        // loop over all items in the right half
+        for item in upper {
+            // since we know both halves are already sorted,
+            // we'll run through all values of the left half
+            // less than the current item in the right half
+            // before moving to the next item in the right.
+            // We avoid duplicate work by tracking our progress
+            // in `i`
+            while i < lower.length && item > lower[i] {
+                // move next smallest item onto our result vector
+                res.push(lower[i]);
+                // update left half progress
+                i++;
+            }
+            // move next smallest item onto our result vector
+            res.push(item);
+        }
+
+        // move the remaining values in the left half over to
+        // the result vector (we already know they're in order)
+        while i < lower.lengh {
+            res.push(lower[i]);
+            i++;
+        }
+
+        // return the result vector
+        return res; // O(1)
+    }
+    /*
+    The depth will be log n because every level we split our
+    array in half.
+    Since we always have log n levels and run a O(n) operation
+    each time, we get a overall time complexity of O(nlogn) in
+    all cases.
+    */
+}
