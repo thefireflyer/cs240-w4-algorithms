@@ -13,7 +13,7 @@ use std::fmt;
 ///     | The slice to sort
 ///
 ///
-fn merge_sort<T: Clone + Ord + fmt::Debug>(arr: Vec<T>) -> Vec<T> {
+pub fn merge_sort<T: Clone + Ord + fmt::Debug>(arr: Vec<T>) -> Vec<T> {
     fn inner<T: Clone + Ord + fmt::Debug>(arr: Vec<&T>) -> Vec<&T> {
         if arr.len() < 2 {
             arr.to_vec()
